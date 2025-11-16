@@ -86,6 +86,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull latest changes
+        run: git pull origin main --rebase
+
       - id: auth
         uses: google-github-actions/auth@v1
         with:
@@ -116,9 +119,6 @@ jobs:
       - name: Apply ArgoCD Application manifest
         run: |
           kubectl apply -f argocd/application.yaml
-
-      - name: Pull latest changes
-        run: git pull origin main --rebase
 
       - name: Commit files
         run: |
