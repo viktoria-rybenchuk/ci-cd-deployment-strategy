@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: hello-gitops
+namespace: argocd-demo
 
 resources:
 - deployment-v1.yaml
@@ -12,4 +12,4 @@ resources:
 images:
 - name: hello-gitops
   newName: victoriar18/hello-gitops
-  newTag: c6826657ec2d7fc60c0a9d98ec93a7ac91f6d202
+  newTag: 579754593825a2846533db4bf72edcc15e88da44
