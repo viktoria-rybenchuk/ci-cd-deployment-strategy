@@ -97,12 +97,16 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
+      - name: Create namespace argocd-demo if not exists
+        run: |
+          kubectl get namespace argocd-demo || kubectl create namespace argocd-demo
+
       - name: Deploy Application
         run: |
           cd k8s
           kustomize edit set image hello-gitops=${{ secrets.DOCKER_USERNAME }}/hello-gitops:${{ github.sha }}
           kubectl apply -k .
-          kubectl rollout status deployment/hello-gitops-v2 -n hello-gitops
+          kubectl rollout status deployment/hello-gitops-v2 -n argocd-demo
 
       - name: Apply ArgoCD Application manifest
         run: |
