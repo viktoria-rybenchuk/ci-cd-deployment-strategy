@@ -101,11 +101,6 @@ jobs:
         run: |
           cd k8s
           kustomize edit set image hello-gitops=${{ secrets.DOCKER_USERNAME }}/hello-gitops:${{ github.sha }}
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add kustomization.yaml
-          git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
-          git push origin main
           kubectl apply -k .
           kubectl rollout status deployment/hello-gitops-v2 -n hello-gitops
 
@@ -116,3 +111,14 @@ jobs:
         run: |
           kubectl get pods -n hello-gitops
           kubectl get service hello-gitops -n hello-gitops
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Update image tag"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
