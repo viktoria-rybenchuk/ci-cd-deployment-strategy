@@ -12,4 +12,4 @@ resources:
 images:
 - name: hello-gitops
   newName: victoriar18/hello-gitops
-  newTag: 25eda5ead787daba9fb972e4e0e3160d3b360a48
+  newTag: c6826657ec2d7fc60c0a9d98ec93a7ac91f6d202
