@@ -97,12 +97,16 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-      - name: Deploy V2
+      - name: Deploy Application
         run: |
           cd k8s
           kustomize edit set image hello-gitops=${{ secrets.DOCKER_USERNAME }}/hello-gitops:${{ github.sha }}
           kubectl apply -k .
           kubectl rollout status deployment/hello-gitops-v2 -n hello-gitops
+
+      - name: Apply ArgoCD Application manifest
+        run: |
+          kubectl apply -f argocd/application.yaml
 
       - name: Pull latest changes
         run: git pull origin main --rebase
@@ -111,7 +115,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -am "Update image tag"
+          git commit -am "Update image tag" || echo "No changes to commit"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
