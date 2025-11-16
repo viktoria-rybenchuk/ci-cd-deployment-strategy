@@ -97,6 +97,15 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
+      - name: Create namespace hello-gitops if not exists
+        run: |
+          kubectl get namespace hello-gitops || kubectl create namespace hello-gitops
+
+      - name: Set namespace in kustomize
+        run: |
+          cd k8s
+          kustomize edit set namespace hello-gitops
+
       - name: Deploy V2
         run: |
           cd k8s

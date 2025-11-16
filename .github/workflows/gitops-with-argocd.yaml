@@ -101,10 +101,15 @@ jobs:
         run: |
           kubectl get namespace argocd-demo || kubectl create namespace argocd-demo
 
+      - name: Set namespace in kustomize
+        run: |
+          cd k8s
+          kustomize edit set namespace argocd-demo
+
       - name: Deploy Application
         run: |
           cd k8s
-          kustomize edit set image argocd-demo=${{ secrets.DOCKER_USERNAME }}/hello-gitops:${{ github.sha }}
+          kustomize edit set image hello-gitops=${{ secrets.DOCKER_USERNAME }}/hello-gitops:${{ github.sha }}
           kubectl apply -k .
           kubectl rollout status deployment/hello-gitops-v2 -n argocd-demo
 
