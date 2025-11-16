@@ -118,7 +118,7 @@ jobs:
 
       - name: Apply ArgoCD Application manifest
         run: |
-          kubectl apply -f argocd/application.yaml
+          kubectl apply -f argocd/application.yaml  -n argocd-demo
 
       - name: Commit files
         run: |
