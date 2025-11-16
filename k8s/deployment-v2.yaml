@@ -17,8 +17,15 @@ spec:
         version: v2.0.0
     spec:
       containers:
-      - name: hello-gitops
-        image: hello-gitops:latest
-        ports:
-        - name: http
-          containerPort: 8050
+        - name: hello-gitops
+          image: hello-gitops:latest
+          ports:
+            - name: http
+              containerPort: 8050
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
